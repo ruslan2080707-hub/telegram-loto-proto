@@ -53,3 +53,4 @@ curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook?url=https://<ra
 - Money stored in qepik (integer cents). UI shows AZN with 2 decimals.
 - Referral bonus = 0.10 AZN (10 qepik) on first entry of invited user.
 - Withdraw uses admin inline buttons in Telegram for approval.
+"# telegram-loto-proto" 
