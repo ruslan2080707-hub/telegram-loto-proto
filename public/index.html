@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Лото Мини-апп — Прототип</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="intro" class="intro-screen">
+    <div class="intro-card">
+      <div class="intro-logo">Loto</div>
+      <div class="intro-anim"></div>
+      <div class="intro-title">Welcome</div>
+      <div class="intro-langs">
+        <button class="flag" title="Azərbaycan" aria-label="Azərbaycan" data-lang="az">🇦🇿</button>
+        <button class="flag" title="Русский" aria-label="Русский" data-lang="ru">🇷🇺</button>
+        <button class="flag" title="English" aria-label="English" data-lang="en">🇬🇧</button>
+      </div>
+    </div>
+  </div>
+  <header class="topbar">
+    <div class="left">
+      <button id="backBtn" class="back" style="display:none">← Лобби</button>
+      <h1 id="title">Лото — Лобби</h1>
+    </div>
+    <div class="right">
+      <div id="balance" class="badge">Баланс: 0.00 AZN</div>
+      <button id="topupBtn" class="go-btn small">Пополнить AZN</button>
+      <button id="topupTonBtn" class="go-btn small">Пополнить TON</button>
+      <button id="topupStarsBtn" class="go-btn small">Пополнить Телеграм Старс</button>
+      <button id="withdrawBtn" class="go-btn small" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">Вывод</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="lobby" class="rooms"></section>
+    <section id="roomView" class="room-view" style="display:none"></section>
+    <section id="tasksView" style="display:none"></section>
+    <section id="referralView" style="display:none"></section>
+    <section id="ratingView" style="display:none"></section>
+    <section id="profileView" style="display:none"></section>
+  </main>
+
+  <div id="overlay" class="overlay" style="display:none">
+    <div class="overlay-card">
+      <div id="overlayTitle" class="overlay-title"></div>
+      <div id="overlayPrize" class="overlay-prize"></div>
+      <div id="overlayCard" class="overlay-body"></div>
+      <button id="overlayClose" class="overlay-close">Понятно</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <button id="tabRooms" class="tab active">Комнаты</button>
+    <button id="tabTasks" class="tab">Задания</button>
+    <button id="tabReferral" class="tab">Рефералка</button>
+    <button id="tabRating" class="tab">Рейтинг</button>
+    <button id="tabProfile" class="tab">Профиль</button>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
