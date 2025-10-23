@@ -7,23 +7,54 @@ Demo Telegram WebApp lottery with rooms, bots, i18n, tasks, referrals, withdrawa
 - Postgres (Neon) via `pg`
 - Telegram Bot API (notifications, webhook for inline buttons)
 - Vanilla JS frontend (`public/`)
+- Deployed on Railway
 
-## Run locally
-1. Create `.env` in `server/` or project root:
+## Quick Deploy to Railway + Neon
+
+### 1. Setup Neon Database
+1. Go to [Neon Console](https://console.neon.tech/)
+2. Create new project: `lotto-proto`
+3. Copy the connection string (starts with `postgresql://`)
+
+### 2. Setup Railway
+1. Go to [Railway](https://railway.app/)
+2. Connect your GitHub account
+3. Create new project from GitHub repo: `ruslan2080707-hub/telegram-loto-proto`
+4. Railway will auto-deploy from main branch
+
+### 3. Configure Environment Variables in Railway
+In Railway dashboard → Variables tab, add:
+
 ```
-TELEGRAM_BOT_TOKEN=YOUR_TOKEN
-ADMIN_CHAT_ID=5649983054
-DATABASE_URL=postgresql://... (Neon, sslmode=require)
-WEBAPP_URL=http://localhost:5173
+DATABASE_URL=postgresql://username:password@hostname:port/database?sslmode=require
+TELEGRAM_BOT_TOKEN=your_bot_token_here
+BOT_TOKEN=your_bot_token_here
+ADMIN_CHAT_ID=your_admin_chat_id
+PORT=3000
 MIN_WITHDRAW_AZN=10
 REF_BONUS_Q=10
+PUBLIC_BASE_URL=https://your-app.railway.app
+WEBAPP_URL=https://your-app.railway.app
+STARS_TO_USD=0.02
+USD_TO_AZN=1.70
+TON_USD=2.13
+TON_WALLET=UQB21lj7GGZIaYUcC_lifGsImy5qpsiKS1zJZwLypS-ZZnoG
 ```
+
+### 4. Set Telegram Webhook
+After Railway deployment, set webhook:
+```bash
+curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook?url=https://your-app.railway.app/tg/webhook"
+```
+
+## Run locally
+1. Copy `env.example` to `.env` and fill values
 2. Install deps and start:
-```
+```bash
 npm i
 npm start
 ```
-App: http://localhost:5173
+App: http://localhost:3000
 
 ## API (server)
 - POST `/api/telegram/verify` — verify WebApp initData, upsert user, apply referral bonus.
@@ -40,17 +71,7 @@ App: http://localhost:5173
 - Click balance badge to open quick actions (deposit/withdraw).
 - Referral link: `https://t.me/loto_onlinebot?startapp=ref_<tg_id>`.
 
-## Deploy (Railway)
-1. Push to GitHub.
-2. Create Railway service from repo.
-3. Set ENV: `TELEGRAM_BOT_TOKEN`, `ADMIN_CHAT_ID`, `DATABASE_URL`, `WEBAPP_URL`, `MIN_WITHDRAW_AZN`, `REF_BONUS_Q`.
-4. Set Telegram webhook after deploy (replace domain and token):
-```
-curl "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/setWebhook?url=https://<railway-domain>/tg/webhook"
-```
-
 ## Notes
 - Money stored in qepik (integer cents). UI shows AZN with 2 decimals.
 - Referral bonus = 0.10 AZN (10 qepik) on first entry of invited user.
-- Withdraw uses admin inline buttons in Telegram for approval.
-"# telegram-loto-proto" 
+- Withdraw uses admin inline buttons in Telegram for approval. 
