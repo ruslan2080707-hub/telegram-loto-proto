@@ -142,7 +142,9 @@ async function notifyAdminTON(dep){
   }
 }
 
-initSchema().catch(()=>{});
+initSchema().catch((err)=>{
+  console.error('Database initialization failed:', err);
+});
 
 const server = http.createServer(async (req, res) => {
   let reqPath = req.url.split('?')[0];
@@ -332,5 +334,13 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Local proto server running at http://localhost:${PORT}`);
+  console.log(`Server starting on port ${PORT}`);
+  console.log(`Database URL configured: ${DATABASE_URL ? 'Yes' : 'No'}`);
+  console.log(`Bot token configured: ${BOT_TOKEN ? 'Yes' : 'No'}`);
+  console.log(`Admin chat ID: ${ADMIN_CHAT_ID}`);
+  console.log(`Public base URL: ${PUBLIC_BASE_URL}`);
+});
+
+server.on('error', (err) => {
+  console.error('Server error:', err);
 });

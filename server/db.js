@@ -10,6 +10,18 @@ const pool = DATABASE_URL ? new Pool({
   ssl: { rejectUnauthorized: false }
 }) : null;
 
+// Test database connection
+if (pool) {
+  pool.connect()
+    .then(client => {
+      console.log('Database connected successfully');
+      client.release();
+    })
+    .catch(err => {
+      console.error('Database connection failed:', err);
+    });
+}
+
 async function initSchema(){
   if (!pool) return;
   const sql = `
