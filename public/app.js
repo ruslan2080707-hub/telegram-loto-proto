@@ -152,16 +152,31 @@
     try{
       const tg = window.Telegram && window.Telegram.WebApp;
       const initData = tg && tg.initData;
-      if (!initData) return;
-      const res = await fetch('/api/telegram/verify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ initData }) });
+      if (!initData) {
+        console.log('No Telegram WebApp initData available');
+        return;
+      }
+      console.log('Sending Telegram verification request...');
+      const res = await fetch('/api/telegram/verify', { 
+        method:'POST', 
+        headers:{'Content-Type':'application/json'}, 
+        body: JSON.stringify({ initData }) 
+      });
       const data = await res.json();
-      if (!data.ok) return;
+      console.log('Telegram verification response:', data);
+      if (!data.ok) {
+        console.log('Telegram verification failed:', data.error);
+        return;
+      }
       state.user.remote = { id: data.user.id, tg_id: data.user.tg_id, username: data.user.username };
       state.user.id = String(data.user.tg_id || 'you');
       state.user.name = data.user.username || state.user.name;
       state.user.balance = Number(data.user.balanceAZN || state.user.balance);
       updateBalanceUI();
-    }catch(e){ /* ignore */ }
+      console.log('User authenticated:', state.user);
+    }catch(e){ 
+      console.error('Telegram setup error:', e);
+    }
   }
   function t(key){
     const dict = I18N[state?.user?.lang || 'ru'] || I18N.ru;
@@ -413,7 +428,15 @@
   goLobby();
   startLoops();
   updateBalanceUI();
-  setupTelegram();
+  
+  // Check if running in Telegram WebApp
+  if (window.Telegram && window.Telegram.WebApp) {
+    console.log('Running in Telegram WebApp');
+    window.Telegram.WebApp.ready();
+    setupTelegram();
+  } else {
+    console.log('Not running in Telegram WebApp - demo mode');
+  }
 
   // Tabs handlers
   if (tabRooms) tabRooms.onclick = () => goLobby();
